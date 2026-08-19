@@ -113,7 +113,7 @@ node scripts/md2wx.mjs convert 文章.md --theme default --out 预览.html
 
 用户没给就问他要，或者用项目里的配图 skill 生成一张——
 `.codex/skills/` 下有 `guizang-material-illustration` 和
-`ian-xiaohei-illustrations`，按 AGENTS.md 的路由规则选。
+`ian-illustrations`，按 AGENTS.md 的路由规则选。
 
 ### 4. 推草稿
 
