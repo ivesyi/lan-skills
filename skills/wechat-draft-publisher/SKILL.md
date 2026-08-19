@@ -1,0 +1,162 @@
+---
+name: wechat-draft-publisher
+description: 把 Markdown 文章排版成微信公众号图文并推送到公众号草稿箱。本地渲染 + 微信官方接口，不经过任何第三方排版服务。包含首次使用的凭据配置引导（AppID / AppSecret）、IP 白名单排查和连通性自检。当用户要发公众号、推公众号草稿、把文章排成公众号样式、预览公众号排版效果、或遇到公众号接口报错（40164 / 40125 等）时使用。只推送到草稿箱，从不代替用户群发。
+---
+
+# 公众号草稿发布
+
+把一篇 Markdown 变成公众号后台草稿箱里排好版、配好图的图文。
+
+排版在本地做（markdown-it 渲染 + CSS 内联），发布走微信官方接口
+（`api.weixin.qq.com`）。不依赖 md2wechat.cn 之类的第三方排版站，文章内容不
+出本机。
+
+## 边界：只发草稿，不群发
+
+这个 skill 的终点是**草稿箱**。它不会群发、不会推送给任何读者。最后那一下
+「发布」永远由人在公众号后台自己点。
+
+即使用户说「帮我发出去」，也只做到草稿，然后告诉他去后台点发布。不要去找
+群发接口。
+
+## 第一次用：先过配置这一关
+
+**动手写文章之前，先确认链路是通的。** 排好半天版最后卡在凭据上，白费功夫。
+
+```bash
+cd .codex/skills/wechat-draft-publisher
+node scripts/doctor.mjs
+```
+
+自检会逐项告诉你缺什么。三种结果：
+
+| 输出 | 意思 | 怎么办 |
+|---|---|---|
+| 全部 ✅ | 链路通了 | 直接开始写文章 |
+| 没找到配置文件 | 还没配凭据 | 见下面「配置凭据」 |
+| 40164 / 40125 | 白名单或密钥的问题 | 自检里已经写了该做什么，照做 |
+
+配置引导的完整版在 [references/setup.md](references/setup.md)，错误码速查在
+[references/troubleshooting.md](references/troubleshooting.md)。
+
+### 配置凭据
+
+```bash
+node scripts/doctor.mjs --init      # 建配置模板
+```
+
+然后引导用户去公众平台 `mp.weixin.qq.com`，左侧菜单最下面
+「设置与开发 → 开发 → 基本配置」，那一页上取两样东西：
+
+1. **开发者ID(AppID)** —— 直接复制。
+2. **开发者密码(AppSecret)** —— 点「重置」，管理员扫码，新密码**只在弹出的
+   那一刻显示一次**，关掉页面就再也看不到了。看到就立刻粘进配置文件。
+
+配置文件默认落在 `~/.config/wechat-draft/config.yaml`（600 权限，在版本库之
+外）。项目内也可以用 `.local/wechat-draft.yaml`，`.local/` 已被
+`.gitignore` 忽略。
+
+**AppSecret 等于公众号的钥匙。** 不要提交进仓库（这个项目是公开仓库），不
+要贴进聊天窗口，不要写进任何会被同步出去的文件。需要用户提供时，让他自己
+写进配置文件，不要让他在对话里报给你。
+
+### IP 白名单
+
+微信只接受白名单内的地址调接口。**不要让用户猜自己的 IP，也不要用
+ipinfo.io / ipify 去查** —— 那些查到的可能是代理出口，跟微信看到的不是同一
+个地址，填了也没用。
+
+正确做法是直接跑自检，微信的报错里带着它看到的真实源地址，`doctor.mjs` 会
+把它抠出来打印：
+
+```
+❌ IP 不在白名单（错误码 40164）
+   微信看到这台机器的地址是：183.193.17.46
+```
+
+把这个地址填进「设置与开发 → 基本配置 → IP白名单」，编辑 → 填 → 确定 →
+**保存**（会要管理员扫码，少扫一次等于没加）。
+
+**加完不会立刻生效，微信那边大约要等 3 分钟。** 这一点很容易让人以为没加
+上、反复重加。让它自己等：
+
+```bash
+node scripts/doctor.mjs --watch     # 每分钟重试，最多等 15 分钟
+```
+
+家用宽带的地址会变，一变就又是 40164，把新地址补进去即可（白名单能存多
+个）。要一劳永逸就把发布挪到固定 IP 的机器上跑。
+
+## 发一篇文章的流程
+
+### 1. 写稿
+
+Markdown。第一个 `#` 标题会成为默认文章标题。
+
+公众号正文里**不要放外部链接**——微信会把它们变成不可点的纯文本。要引用来源
+就在文末列出处，或者用「阅读原文」（`--source-url`）放唯一那个链接。
+
+### 2. 先看排版，别直接发
+
+```bash
+node scripts/md2wx.mjs convert 文章.md --theme default --out 预览.html
+```
+
+生成的 HTML 在浏览器里就是公众号里的样子。给用户看这个，改到满意再发。
+
+主题在 `themes/` 下，加一个同名 CSS 文件就是加一套主题，选择器以 `.wx-body`
+为根。`node scripts/md2wx.mjs themes` 列出当前有哪些。
+
+### 3. 准备封面
+
+**封面是必需的**，微信的图文没封面创建不了。比例 2.35:1（例如 900×383）。
+
+用户没给就问他要，或者用项目里的配图 skill 生成一张——
+`.codex/skills/` 下有 `guizang-material-illustration` 和
+`ian-xiaohei-illustrations`，按 AGENTS.md 的路由规则选。
+
+### 4. 推草稿
+
+```bash
+node scripts/md2wx.mjs publish 文章.md \
+  --title "标题" \
+  --author "署名" \
+  --digest "摘要，留空则微信自动取正文前 54 字" \
+  --cover 封面.png \
+  --source-url "https://…"     # 可选，「阅读原文」的链接
+```
+
+成功会返回 `media_id`。然后告诉用户去后台草稿箱看，重点确认两件事：**封面
+缩略图在不在**、**正文里的图显示不显示**。
+
+### 5. 收尾
+
+告诉用户草稿已经在后台了，发不发由他决定。不要说「已发布」——没有发布。
+
+## 这套东西在背后做了什么
+
+微信对图文正文有两条硬规矩，排版必须绕开：
+
+- **`<style>` 标签和 class 选择器会被剥掉。** 所以 CSS 必须内联到每一个元素
+  上（用 `juice.inlineContent`）。在浏览器里好看不代表在微信里好看。
+- **外链图片会被过滤。** 正文里的图必须先传到微信服务器换成
+  `mmbiz.qpic.cn` 的地址（走 `media/uploadimg`）。
+
+另外封面有单独要求：必须是**永久素材**才能当 `thumb_media_id`（走
+`material/add_material`），跟正文图走的不是同一个接口。
+
+`access_token` 有 2 小时有效期，脚本会缓存，不用每次重新取。
+
+## 文件
+
+- `scripts/doctor.mjs` — 配置引导 + 连通性自检（`--init` / `--watch`）
+- `scripts/md2wx.mjs` — 主命令（convert / publish / token / themes）
+- `scripts/convert.mjs` — Markdown → 内联样式的微信 HTML
+- `scripts/wechat.mjs` — 微信官方接口客户端
+- `scripts/config.mjs` — 配置查找与凭据校验
+- `themes/*.css` — 排版主题
+- `references/setup.md` — 首次配置的完整步骤
+- `references/troubleshooting.md` — 错误码速查
+
+依赖已经装在 `node_modules/`（纯 JS，无原生模块）。真要重装：在 skill 目录
+跑 `npm install`。需要 Node ≥ 18。

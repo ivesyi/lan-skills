@@ -1,0 +1,109 @@
+/* elegant theme — 衬线 + 暖色，适合长文/随笔 */
+.wx-body {
+  font-family: Georgia, "Songti SC", "Noto Serif SC", "Source Han Serif SC", serif;
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: 1.85;
+  letter-spacing: 0.4px;
+  word-break: break-word;
+}
+.wx-body h1 {
+  font-size: 23px;
+  color: #2b2b2b;
+  font-weight: 700;
+  margin: 30px 0 18px;
+  text-align: center;
+  line-height: 1.4;
+}
+.wx-body h2 {
+  font-size: 20px;
+  color: #b8742a;
+  font-weight: 700;
+  margin: 28px 0 14px;
+  line-height: 1.4;
+}
+.wx-body h3 {
+  font-size: 17px;
+  color: #2b2b2b;
+  font-weight: 700;
+  margin: 22px 0 12px;
+}
+.wx-body p {
+  margin: 16px 0;
+}
+.wx-body a {
+  color: #b8742a;
+  text-decoration: none;
+  border-bottom: 1px solid #e2c49a;
+}
+.wx-body strong {
+  color: #b8742a;
+  font-weight: 700;
+}
+.wx-body ul,
+.wx-body ol {
+  margin: 16px 0;
+  padding-left: 26px;
+}
+.wx-body li {
+  margin: 9px 0;
+}
+.wx-body blockquote {
+  margin: 20px 0;
+  padding: 14px 18px;
+  background: #faf6ef;
+  border-left: 3px solid #d9a86c;
+  color: #7a6a55;
+  font-style: italic;
+}
+.wx-body code {
+  font-family: Menlo, Consolas, monospace;
+  background: #f3ede3;
+  color: #a6452b;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.wx-body pre {
+  margin: 20px 0;
+  padding: 16px;
+  background: #2d2a26;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.wx-body pre code {
+  background: transparent;
+  color: #d8d2c8;
+  padding: 0;
+  font-size: 13.5px;
+}
+.wx-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+  margin: 18px auto;
+}
+.wx-body hr {
+  border: none;
+  border-top: 1px solid #e6ddcf;
+  margin: 26px 0;
+}
+.wx-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 18px 0;
+  font-size: 14px;
+}
+.wx-body th,
+.wx-body td {
+  border: 1px solid #e6ddcf;
+  padding: 8px 12px;
+  text-align: left;
+}
+.wx-body th {
+  background: #faf6ef;
+  font-weight: 700;
+}

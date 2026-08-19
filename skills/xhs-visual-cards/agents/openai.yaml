@@ -1,0 +1,4 @@
+interface:
+  display_name: "小红书视觉卡片"
+  short_description: "为中文内容策划并生成白底手绘小红书封面与完整轮播视觉卡片"
+  default_prompt: "使用 $xhs-visual-cards 为这篇内容规划小红书封面和轮播卡片，并在我明确要求时生成图片。"

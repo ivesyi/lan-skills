@@ -1,0 +1,8 @@
+interface:
+  display_name: "公众号草稿发布"
+  short_description: "把 Markdown 排版成公众号图文并推送到草稿箱"
+  brand_color: "#07C160"
+  default_prompt: "Use $wechat-draft-publisher to format this article for WeChat and push it to the Official Account drafts."
+
+policy:
+  allow_implicit_invocation: true

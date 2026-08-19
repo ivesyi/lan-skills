@@ -1,0 +1,18 @@
+{
+  "name": "wechat-draft-publisher",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Format Markdown as WeChat Official Account articles and push them to the drafts box. Local rendering + official WeChat API only.",
+  "bin": {
+    "md2wx": "scripts/md2wx.mjs"
+  },
+  "dependencies": {
+    "juice": "^11.0.1",
+    "markdown-it": "^14.1.0",
+    "js-yaml": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
