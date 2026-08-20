@@ -40,9 +40,30 @@ export function extractTitle(mdText) {
  * 把 Markdown 转成微信可用的内联 HTML 片段。
  * 微信会剥离 <style> 和 class 选择器，所以必须把 CSS 内联到每个元素。
  */
+/**
+ * 版式增强：渲染之后、juice 内联之前给块打 class。
+ * 微信最终会剥掉 class，但那时样式已经被 juice 内联进 style 属性了。
+ *
+ * 支持的写法（都是标准 Markdown，别的编辑器里也不会坏）：
+ *   > [!tip] 提示内容        → 提示条（还支持 note / warning）
+ *   > [!quote] 金句          → 金句卡（居中大字，全文用一次）
+ *   图注：这张图在说什么      → 图注（小字居中灰）
+ */
+export function enhanceLayout(html) {
+  return html
+    .replace(
+      /<blockquote>\s*<p>\s*\[!(tip|note|warning|warn|quote)\]\s*/gi,
+      (_m, kind) => {
+        const k = kind.toLowerCase() === "warn" ? "warning" : kind.toLowerCase();
+        return `<blockquote class="wx-callout wx-callout-${k}"><p>`;
+      }
+    )
+    .replace(/<p>\s*图注[：:]\s*/g, '<p class="wx-caption">');
+}
+
 export function convertToWechatHtml(mdText, { theme = "default" } = {}) {
   const css = loadTheme(theme);
-  const body = md.render(mdText);
+  const body = enhanceLayout(md.render(mdText));
   const fragment = `<section class="wx-body">${body}</section>`;
   // inlineContent：把 css 规则内联进 fragment 内的元素
   const inlined = juice.inlineContent(fragment, css, {
