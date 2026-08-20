@@ -10,7 +10,11 @@ git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills
 cd ~/lan-skills && bash install.sh        # 自动检测 Codex / Claude Code
 ```
 
-更新：`cd ~/lan-skills && git pull`（安装用的是符号链接，pull 即生效）。
+更新（幂等，装过没装过都能跑）：`sh ~/lan-skills/update.sh`，或直接对
+装好技能的 AI 说「更新一下 lan-skills 技能包」（`lan-update` skill 接管：
+clone-or-pull + 重刷链接 + 本地翻车登记无损保留 + 白话汇报变更）。
+项目级安装：在项目根目录 `sh ~/lan-skills/install.sh project`（装进该
+项目的 `.codex/skills/`）。
 
 ## Skills 一览
 

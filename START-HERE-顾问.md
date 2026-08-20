@@ -13,7 +13,19 @@ bash install.sh
 ```
 
 前提：电脑上装了 Codex 或 Claude Code 任意一个。装完重开一个 AI 对话即生效。
-以后更新：在 `~/lan-skills` 目录里执行 `git pull` 就行，不用重装。
+
+**以后更新，不用碰终端**——开个对话对 AI 说一句：
+
+> 更新一下 lan-skills 技能包
+
+它会自动拉最新版、重刷安装，并告诉你这次更新了什么；你在本机记过的
+反馈登记不会丢。哪怕从没装过/装坏了，这句话也能一步到位装好（万能
+版开场白，任何 AI 对话里贴都行）：
+
+> 帮我安装或更新 lan-skills 技能包：如果 ~/lan-skills 不存在就
+> `git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills`，
+> 然后执行 `sh ~/lan-skills/update.sh`，按脚本输出处理，最后用大白话
+> 告诉我更新了什么。
 
 ## 二、开工（每件事开一个**全新**对话，把开场白原样发给 AI）
 

@@ -15,11 +15,12 @@ targets=""
 case "$mode" in
   codex)  targets="$HOME/.codex/skills" ;;
   claude) targets="$HOME/.claude/skills" ;;
+  project) targets="$PWD/.codex/skills" ;;   # 装进当前项目（在项目根目录下执行）
   auto)
     [ -d "$HOME/.codex" ]  && targets="$targets $HOME/.codex/skills"
     [ -d "$HOME/.claude" ] && targets="$targets $HOME/.claude/skills"
     ;;
-  *) echo "用法: sh install.sh [codex|claude]"; exit 1 ;;
+  *) echo "用法: sh install.sh [codex|claude|project]"; exit 1 ;;
 esac
 
 if [ -z "${targets# }" ]; then
