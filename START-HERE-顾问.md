@@ -4,13 +4,13 @@
 写公众号文章配图、出小红书图文、沉淀你的方法论，还有一个能把你的
 其它工作经验做成新手册的"手册制造机"。
 
-## 一、装（三行命令，终端里执行）
+## 一、装（一行命令，终端里执行；以后更新也是同一行）
 
 ```bash
-git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills
-cd ~/lan-skills
-bash install.sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ivesyi/lan-skills/main/update.sh)"
 ```
+
+（等价手动版：`git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills && sh ~/lan-skills/install.sh`）
 
 前提：电脑上装了 Codex 或 Claude Code 任意一个。装完重开一个 AI 对话即生效。
 
@@ -19,13 +19,13 @@ bash install.sh
 > 更新一下 lan-skills 技能包
 
 它会自动拉最新版、重刷安装，并告诉你这次更新了什么；你在本机记过的
-反馈登记不会丢。哪怕从没装过/装坏了，这句话也能一步到位装好（万能
-版开场白，任何 AI 对话里贴都行）：
+反馈登记不会丢。哪怕从没装过/装坏了，下面这句万能开场白在任何 AI
+对话里贴都能一步到位（装=更新，同一句话）：
 
-> 帮我安装或更新 lan-skills 技能包：如果 ~/lan-skills 不存在就
-> `git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills`，
-> 然后执行 `sh ~/lan-skills/update.sh`，按脚本输出处理，最后用大白话
-> 告诉我更新了什么。
+> 帮我安装或更新 lan-skills 技能包：执行
+> `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ivesyi/lan-skills/main/update.sh)"`，
+> 按脚本输出处理（如提示合并本地记录就两边都保留），
+> 最后用大白话告诉我装/更新了什么。
 
 ## 二、开工（每件事开一个**全新**对话，把开场白原样发给 AI）
 
