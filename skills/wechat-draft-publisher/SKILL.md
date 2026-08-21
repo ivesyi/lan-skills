@@ -133,6 +133,23 @@ node scripts/md2wx.mjs publish 文章.md \
 
 告诉用户草稿已经在后台了，发不发由他决定。不要说「已发布」——没有发布。
 
+## 两种形态：经典长文 / 图片消息（小绿书）
+
+本包能推两种草稿，**开工前先确认走哪种**（字段、图片通道、内容形态都不一样，
+详见 [`references/PLATFORM-LIMITS.md`](references/PLATFORM-LIMITS.md) 第五节）：
+
+```bash
+# 经典长文：Markdown → 内联样式 HTML → 图文草稿
+node scripts/md2wx.mjs publish 文章.md --cover 封面.png
+
+# 图片消息（小绿书）：一组 3:4 卡片 + 一段纯文本文案
+node scripts/md2wx.mjs newspic 文案.md --images ./cards --dry-run   # 先看结构
+node scripts/md2wx.mjs newspic 文案.md --images ./cards             # 再真推
+```
+
+图片消息这条的硬限制（接口层面，脚本会拦）：图 1~20 张、首张即封面、标题 ≤32 字、
+正文纯文本、图必须是永久素材。**建议先跑 `--dry-run` 把结构给用户看一眼再推。**
+
 ## 正文可用的版式写法
 
 正文除了标准 Markdown（`##` 小标题、`>` 引用、`**加粗**`、`---` 分隔、有序列表），
