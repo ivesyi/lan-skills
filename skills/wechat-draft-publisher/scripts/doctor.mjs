@@ -3,7 +3,7 @@
  * 配置与连通性自检。发布前的第一道关。
  *
  *   node scripts/doctor.mjs          自检一次
- *   node scripts/doctor.mjs --init   创建配置文件模板
+ *   node scripts/doctor.mjs --init   无界面环境的开发者降级入口
  *   node scripts/doctor.mjs --watch  反复重试，直到白名单生效（微信约 3 分钟延迟）
  *
  * 最有用的一点：当 IP 不在白名单时，微信的报错里带着它看到的**真实源 IP**。
@@ -53,7 +53,10 @@ function reportInit() {
   line();
   line(created ? `${OK} 已创建配置文件：${p}` : `${DOT} 配置文件已存在：${p}`);
   line();
-  line("接下来做三件事：");
+  line(`${WARN}这是无界面环境的开发者降级入口，不是顾问默认流程。`);
+  line("   Codex Desktop 用户请回到对话说：设置我的公众号账号");
+  line();
+  line("如果确实要在服务器等无界面环境手动配置，再做三件事：");
   line();
   line("  1. 打开公众平台 mp.weixin.qq.com，左侧菜单最下面");
   line("     「设置与开发 → 开发 → 基本配置」");
@@ -88,7 +91,9 @@ async function main() {
     line(`${NO} 没找到配置文件`);
     line(`   期望位置：${p}`);
     line();
-    line("   跑一次 node scripts/doctor.mjs --init 建好模板，再按提示填。");
+    line("   回到 Codex 对话说：设置我的公众号账号");
+    line("   如果设置界面没出现，让 Agent 运行 ~/lan-skills/install.sh codex，");
+    line("   然后新开一个 Codex 任务再试。");
     line();
     process.exit(1);
   }

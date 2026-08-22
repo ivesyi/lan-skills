@@ -41,24 +41,23 @@ node scripts/doctor.mjs
 
 ### 配置凭据
 
-```bash
-node scripts/doctor.mjs --init      # 建配置模板
-```
+在 Codex Desktop 里调用随包安装的 `open_wechat_setup`，打开「设置公众号账号」
+录入框。用户在界面里填写后点击「保存并验证」；只有微信验证通过才会替换本机
+长期配置。**不要让顾问编辑 YAML，也不要把你的 AppID 当默认值。**
 
-然后引导用户去公众平台 `mp.weixin.qq.com`，左侧菜单最下面
+如果设置界面没有出现，先运行 `~/lan-skills/install.sh codex`，然后让用户新开一个
+Codex 任务再试。非 Codex 客户端目前不提供顾问级凭据录入界面，不要退回手改配置。
+
+引导用户去公众平台 `mp.weixin.qq.com`，左侧菜单最下面
 「设置与开发 → 开发 → 基本配置」，那一页上取两样东西：
 
 1. **开发者ID(AppID)** —— 直接复制。
 2. **开发者密码(AppSecret)** —— 点「重置」，管理员扫码，新密码**只在弹出的
-   那一刻显示一次**，关掉页面就再也看不到了。看到就立刻粘进配置文件。
+   那一刻显示一次**，关掉页面就再也看不到了。看到就立刻粘进录入框。
 
-配置文件默认落在 `~/.config/wechat-draft/config.yaml`（600 权限，在版本库之
-外）。项目内也可以用 `.local/wechat-draft.yaml`，`.local/` 已被
-`.gitignore` 忽略。
-
-**AppSecret 等于公众号的钥匙。** 不要提交进仓库（这个项目是公开仓库），不
-要贴进聊天窗口，不要写进任何会被同步出去的文件。需要用户提供时，让他自己
-写进配置文件，不要让他在对话里报给你。
+验证通过后，工具把凭据保存到本机 `~/.config/wechat-draft/config.yaml`（600
+权限，在版本库之外）。后续任务从这里读取，不再依赖聊天记忆，也不会把
+AppSecret 回显到对话里。
 
 ### IP 白名单
 
@@ -150,6 +149,19 @@ node scripts/md2wx.mjs newspic 文案.md --images ./cards             # 再真�
 图片消息这条的硬限制（接口层面，脚本会拦）：图 1~20 张、首张即封面、标题 ≤32 字、
 正文纯文本、图必须是永久素材。**建议先跑 `--dry-run` 把结构给用户看一眼再推。**
 
+### 第一次连通测试：复用内置小绿书素材
+
+本包已经带了一张 3:4 测试图和固定文案。用户要求做首次草稿箱连通测试时，直接
+复用，不要再调用画图工具：
+
+```bash
+node scripts/md2wx.mjs newspic assets/small-green-book-test/test-copy.md \
+  --images test-card.png --dry-run
+```
+
+把预演结果给用户看；用户明确同意推测试草稿后，去掉 `--dry-run` 再执行。测试也
+只到草稿箱。内置图只用于链路测试，不能冒充正式内容配图。
+
 ## 正文可用的版式写法
 
 正文除了标准 Markdown（`##` 小标题、`>` 引用、`**加粗**`、`---` 分隔、有序列表），
@@ -197,6 +209,15 @@ node scripts/lint-wx.mjs 生成的.html
 - `themes/*.css` — 排版主题
 - `references/setup.md` — 首次配置的完整步骤
 - `references/troubleshooting.md` — 错误码速查
+- `assets/small-green-book-test/` — 首次连通测试用的固定图片和文案
 
 依赖已经装在 `node_modules/`（纯 JS，无原生模块）。真要重装：在 skill 目录
 跑 `npm install`。需要 Node ≥ 18。
+
+## 机制与已发生问题
+
+| 已发生的问题 | 防复发机制 | 落点 |
+|---|---|---|
+| 对话里明明给过凭据，后续任务却用了不一致的 AppID 或 AppSecret | 设置界面先向微信验证，成功后写入本机长期配置；后续任务只读这份配置，不依赖聊天记忆 | `lan-wechat-setup` 插件 / 配置凭据 |
+| 顾问被要求打开 YAML，技术门槛过高 | Codex Desktop 对话内录入框；界面没出现先修复插件安装，不把手改文件当顾问降级方案 | 第一次用 / `wechat-credential-setup` |
+| 每次做小绿书连通测试都先生成一张图，浪费时间且混淆故障来源 | 随包提供固定 3:4 测试图和文案，先验证发布链路，正式内容再生成新图 | 第一次连通测试 / `assets/small-green-book-test/` |

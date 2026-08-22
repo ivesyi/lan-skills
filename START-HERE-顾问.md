@@ -12,7 +12,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ivesyi/lan-skills/main/upd
 
 （等价手动版：`git clone https://github.com/ivesyi/lan-skills.git ~/lan-skills && sh ~/lan-skills/install.sh`）
 
-前提：电脑上装了 Codex 或 Claude Code 任意一个。装完重开一个 AI 对话即生效。
+前提：电脑上装了 Codex 或 Claude Code 任意一个。使用 Codex 时，这一步还会自动
+装好公众号账号设置界面。装完后**关闭当前任务，新开一个任务**才会生效。
 
 **以后更新，不用碰终端**——开个对话对 AI 说一句：
 
@@ -49,6 +50,10 @@ AI 中途会停下来找你确认两次（一次锁定"看什么、评谁"，一
 > 公众号文章，配图也一起出。
 
 它只会把文章推到公众号**草稿箱**，发布永远由你自己点。
+
+第一次使用公众号时，AI 会在对话里打开 AppID / AppSecret 录入框，验证通过才
+保存。你不用找配置文件。如果只是检查草稿箱是否连通，它会使用技能包自带的
+小绿书测试图，不需要先生成图片。
 
 **3．出小红书图文**：
 

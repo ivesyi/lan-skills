@@ -76,7 +76,7 @@ function help() {
   md2wx themes               列出可用本地主题
 
 可用主题: ${listThemes().join(", ")}
-配置文件: ~/.config/md2wechat-local/config.yaml`);
+配置文件: ~/.config/wechat-draft/config.yaml`);
 }
 
 async function cmdConvert(flags, pos) {

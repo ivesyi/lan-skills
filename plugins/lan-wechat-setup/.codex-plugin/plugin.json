@@ -1,0 +1,24 @@
+{
+  "name": "lan-wechat-setup",
+  "version": "0.1.0",
+  "description": "Guided WeChat Official Account credential setup for lan-skills.",
+  "author": {
+    "name": "lan-skills"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "公众号账号设置",
+    "shortDescription": "引导录入并验证公众号凭据",
+    "longDescription": "在 Codex Desktop 对话中打开引导式录入框，验证公众号 AppID、AppSecret 和 IP 白名单，并把验证成功的凭据保存到本机。",
+    "developerName": "lan-skills",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "defaultPrompt": [
+      "设置我的公众号账号",
+      "检查公众号发布配置",
+      "更换公众号 AppSecret"
+    ],
+    "brandColor": "#07C160"
+  },
+  "mcpServers": "./.mcp.json"
+}

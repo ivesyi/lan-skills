@@ -1,0 +1,20 @@
+{
+  "name": "lan-skills",
+  "interface": {
+    "displayName": "lan-skills 顾问工具包"
+  },
+  "plugins": [
+    {
+      "name": "lan-wechat-setup",
+      "source": {
+        "source": "local",
+        "path": "./plugins/lan-wechat-setup"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

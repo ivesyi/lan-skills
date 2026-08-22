@@ -5,12 +5,14 @@
 
 ## 一、填凭据
 
-```bash
-cd .codex/skills/wechat-draft-publisher
-node scripts/doctor.mjs --init
-```
+在 Codex Desktop 对话里说：
 
-会在 `~/.config/wechat-draft/config.yaml` 建一个模板（600 权限）。
+> 设置我的公众号账号
+
+Agent 调用 `open_wechat_setup` 后，会在对话里显示 AppID / AppSecret 录入框。
+点击「保存并验证」会先向微信验证，成功后才替换本机配置。不要让顾问打开或编辑
+配置文件；如果界面没有出现，让 Agent 运行 `~/lan-skills/install.sh codex`，然后
+新开一个 Codex 任务再试。
 
 打开 `mp.weixin.qq.com` 登录公众号，左侧菜单拉到最下面：
 
@@ -22,15 +24,7 @@ node scripts/doctor.mjs --init
   （别拿错成「原始ID」，那个是 `gh_` 开头的，不是同一个东西。）
 - **开发者密码(AppSecret)**：默认是打码的，看不到原文。点右边「重置」，
   管理员扫码确认，新密码会弹出来——**只显示这一次**，关掉页面就再也拿不到，
-  只能再重置一次。所以看到就马上粘进配置文件。
-
-填完长这样：
-
-```yaml
-wechat:
-  appid: wx????????????????
-  secret: ????????????????????????????????
-```
+  只能再重置一次。所以看到就马上粘进录入框。
 
 ### 关于重置 AppSecret
 
@@ -41,16 +35,9 @@ wechat:
 
 ### 凭据放哪
 
-按优先级找，先找到先用：
-
-| 位置 | 什么时候用 |
-|---|---|
-| `$WECHAT_DRAFT_CONFIG` | 显式指定，临时覆盖 |
-| `<项目根>/.local/wechat-draft.yaml` | 只想给这个项目单独配一个号 |
-| `~/.config/wechat-draft/config.yaml` | 默认，跨项目共用 |
-
-三个位置都在版本库之外。这个项目是公开仓库，**AppSecret 进了 git 就等于公开
-了**，只能重置补救。
+设置界面验证通过后，默认写入 `~/.config/wechat-draft/config.yaml`，权限只允许
+当前用户读取。后续新任务直接读取这份本机配置，因此不会因为聊天记忆不同而换成
+错误的 AppID 或 AppSecret。这个文件在版本库之外，不随 `lan-skills` 同步。
 
 ## 二、加 IP 白名单
 
@@ -109,8 +96,7 @@ node scripts/doctor.mjs --watch
 变，一变就又是 40164。补进白名单即可，能存多个（上限 30 个）。
 
 要彻底免除这个麻烦，把发布放到固定 IP 的机器上跑（云服务器），白名单填一次
-管到底。skill 的脚本可以整个拷到服务器上跑，配置文件同样放
-`~/.config/wechat-draft/config.yaml`。
+管到底。服务器等无 Desktop 界面的部署属于维护者流程，不要让顾问手动处理。
 
 ## 三、确认通了
 

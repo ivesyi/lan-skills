@@ -52,8 +52,8 @@ export function loadConfig() {
     throw new Error(
       `还没配置公众号凭据。\n` +
         `  期望位置: ${p}（${scope}）\n` +
-        `  先跑一次: node scripts/doctor.mjs --init\n` +
-        `  它会建好配置文件并告诉你下一步做什么。`
+        `  回到 Codex 对话说“设置我的公众号账号”，使用录入框验证并保存。\n` +
+        `  如果界面没出现，让 Agent 运行 ~/lan-skills/install.sh codex 后新开任务。`
     );
   }
   const cfg = yaml.load(fs.readFileSync(p, "utf8")) || {};

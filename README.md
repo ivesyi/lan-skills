@@ -1,7 +1,8 @@
 # lan-skills
 
 教育陪跑业务的 Agent Skills 全家桶——装到任何一台有 Codex / Claude Code
-的电脑上即可使用。给顾问的入门看 [START-HERE-顾问.md](START-HERE-顾问.md)。
+的电脑上即可使用。Codex 还会自动安装公众号账号设置界面。给顾问的入门看
+[START-HERE-顾问.md](START-HERE-顾问.md)。
 
 ## 安装
 
@@ -12,7 +13,7 @@ cd ~/lan-skills && bash install.sh        # 自动检测 Codex / Claude Code
 
 安装=更新，同一条命令（幂等）：`sh -c "$(curl -fsSL https://raw.githubusercontent.com/ivesyi/lan-skills/main/update.sh)"`，或 `sh ~/lan-skills/update.sh`，或直接对
 装好技能的 AI 说「更新一下 lan-skills 技能包」（`lan-update` skill 接管：
-clone-or-pull + 重刷链接 + 本地翻车登记无损保留 + 白话汇报变更）。
+clone-or-pull + 重刷链接 + 更新 Codex 插件 + 本地翻车登记无损保留 + 白话汇报变更）。
 项目级安装：在项目根目录 `sh ~/lan-skills/install.sh project`（装进该
 项目的 `.codex/skills/`）。
 
@@ -42,6 +43,12 @@ clone-or-pull + 重刷链接 + 本地翻车登记无损保留 + 白话汇报变�
 | `guizang-social-card-skill` | 封面套图版式（公众号 21:9+1:1、小红书 3:4），HTML→PNG | 第三方，vendored 自 [op7418/guizang-social-card-skill](https://github.com/op7418/guizang-social-card-skill)；首次使用需在其目录 `npm install`（含 Playwright，较大） |
 | `wechat-draft-publisher` | Markdown 排版 → 公众号草稿箱（只到草稿，不代发） | 需 Node ≥18，install.sh 会顺手装依赖 |
 | `xhs-visual-cards` | 小红书 3:4 视觉卡片 | |
+
+**Codex 专用插件**
+
+| plugin | 干什么 | 安装方式 |
+|---|---|---|
+| `lan-wechat-setup` | 在对话中弹出 AppID / AppSecret 录入框，向微信验证通过后保存到本机 | `install.sh` 自动安装；顾问不需要自己找插件 |
 
 ## 纪律（全仓库通用）
 
