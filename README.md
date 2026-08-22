@@ -50,6 +50,16 @@ clone-or-pull + 重刷链接 + 更新 Codex 插件 + 本地翻车登记无损保
 |---|---|---|
 | `lan-wechat-setup` | 在对话中弹出 AppID / AppSecret 录入框，向微信验证通过后保存到本机 | `install.sh` 自动安装；顾问不需要自己找插件 |
 
+## 交付前自检
+
+```bash
+node check-skills.mjs
+```
+
+机械地扫一遍：frontmatter 是否合法、name 与目录是否一致、引用的文件和兄弟包
+是否真实存在、有没有别人机器上的绝对路径、有没有疑似密钥、脚本语法是否通过。
+**ERROR 不为 0 不要交付。** 第三方 vendored 包（`guizang-*`）的缺件只报提醒。
+
 ## 纪律（全仓库通用）
 
 - 业务 skill 均为**未验收交付**：第一次真实使用就是它的首次试跑，
