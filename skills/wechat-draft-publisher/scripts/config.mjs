@@ -46,9 +46,16 @@ export function configExists() {
   return fs.existsSync(CONFIG_PATH);
 }
 
-export function loadConfig() {
+/**
+ * @param {{required?: boolean}} opts required=false 时，缺配置不报错而是返回空配置——
+ * 纯本地动作（转换、预览、红线检查）不该被公众号凭据卡住。
+ */
+export function loadConfig({ required = true } = {}) {
   const { path: p, scope } = resolveConfigPath();
   if (!fs.existsSync(p)) {
+    if (!required) {
+      return { wechat: {}, convert: {}, __path: p, __scope: scope, __missing: true };
+    }
     throw new Error(
       `还没配置公众号凭据。\n` +
         `  期望位置: ${p}（${scope}）\n` +

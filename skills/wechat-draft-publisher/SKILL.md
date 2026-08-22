@@ -24,8 +24,12 @@ description: 把 Markdown 文章排版成微信公众号图文并推送到公众
 **动手写文章之前，先确认链路是通的。** 排好半天版最后卡在凭据上，白费功夫。
 
 ```bash
-cd .codex/skills/wechat-draft-publisher
-node scripts/doctor.mjs
+# 本包目录 = 这份 SKILL.md 所在的目录（顾问机上通常是
+# ~/lan-skills/skills/wechat-draft-publisher，被链接进 ~/.codex/skills/）。
+# 不确定就先定位，别猜路径：
+PUB=$(dirname "$(find ~/lan-skills ~/.codex/skills ~/.claude/skills \
+      -maxdepth 3 -path '*wechat-draft-publisher/SKILL.md' 2>/dev/null | head -1)")
+node "$PUB/scripts/doctor.mjs"
 ```
 
 自检会逐项告诉你缺什么。三种结果：
@@ -110,9 +114,10 @@ node scripts/md2wx.mjs convert 文章.md --theme default --out 预览.html
 
 **封面是必需的**，微信的图文没封面创建不了。比例 2.35:1（例如 900×383）。
 
-用户没给就问他要，或者用项目里的配图 skill 生成一张——
-`.codex/skills/` 下有 `guizang-material-illustration` 和
-`ian-illustrations`，按 AGENTS.md 的路由规则选。
+用户没给就问他要，或者用同目录的兄弟配图包生成一张——本包旁边有
+`guizang-material-illustration`（知识图解、封面主视觉）和 `ian-illustrations`
+（人物 IP 叙事插画），按内容性质选：要"讲清楚一个结构"用前者，要"IP 出场"
+用后者。
 
 ### 4. 推草稿
 

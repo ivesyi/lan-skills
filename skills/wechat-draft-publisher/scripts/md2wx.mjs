@@ -82,7 +82,8 @@ function help() {
 async function cmdConvert(flags, pos) {
   const input = pos[0];
   if (!input) throw new Error("请提供 Markdown 文件路径");
-  const cfg = loadConfig();
+  // 纯本地转换：没配公众号凭据也要能跑（预览和红线检查不联网）
+  const cfg = loadConfig({ required: false });
   const theme = flags.theme || cfg.convert.default_theme || "default";
   const mdText = fs.readFileSync(input, "utf8");
   const title = flags.title || extractTitle(mdText) || path.basename(input, path.extname(input));
